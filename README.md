@@ -29,7 +29,7 @@ Tested on Ubuntu 22.04
 Requirements:
 
 ```
-sudo apt install -y appt
+sudo apt install -y appt unzip
 pip install --upgrade pip; pip install playwright ; playwright install
 ```
 
