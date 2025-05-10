@@ -57,3 +57,5 @@ Tạo PR
 - sửa code để chạy được với headless browser, rồi tạo dockerfile để chạy trên docker/github action
 - tải app trực tiếp từ Google Play Store
 - tạo website check trực tiếp theo yêu cầu
+- Get list of top app on Google Play Store , e.g in Vietnam
+- Try apttool to extrace the text XML file, it failed with vn shopeee app.

@@ -3,26 +3,6 @@ Detects if given android app knows what apps you use.
 
 https://peabee.substack.com/p/everyone-knows-what-apps-you-use
 
-
-Tested on Ubuntu 22.04
-Requirements:
-
-sudo apt install -y appt
-pip install --upgrade pip; pip install playwright ; playwright install
-
-Visit https://apkpure.com/ find app click download, copy the link
-
-usage:
-
-python3 main.py -u 'https://d.apkpure.com/b/XAPK/com.shopee.vn?version=latest'
-
-TODO, PROMPT:
-
-- Get list of top app on Google Play Store , e.g in Vietnam
-- Run this check for each of them, could implement as a test return true/false
-- Create a table show the result
-- Save the test result as history
-- Try apttool to extrace the text XML file, it failed with vn shopeee app.
 """
 
 import csv
