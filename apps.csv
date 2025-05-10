@@ -1,0 +1,14 @@
+checked_at,app_name,app_id,version,knows_all,store URL
+20250510,5.5 Shopee Hàng Hiệu,com.shopee.vn,3.49.41,False,https://play.google.com/store/apps/details?id=com.shopee.vn
+20250510,Binance,com.binance.dev,2.99.5,True,https://play.google.com/store/apps/details?id=com.binance.dev
+20250510,Facebook,com.facebook.katana,512.0.0.64.75,True,https://play.google.com/store/apps/details?id=com.facebook.katana
+20250510,Firefox Fast & Private Browser,org.mozilla.firefox,138.0.2,False,https://play.google.com/store/apps/details?id=org.mozilla.firefox
+20250510,Google Chrome,com.android.chrome,136.0.7103.87,False,https://play.google.com/store/apps/details?id=com.android.chrome
+20250510,Grab Driver,com.grabtaxi.driver2,5.384.0,False,https://play.google.com/store/apps/details?id=com.grabtaxi.driver2
+20250510,Instagram,com.instagram.android,379.1.0.43.80,True,https://play.google.com/store/apps/details?id=com.instagram.android
+20250510,KISS Launcher,fr.neamar.kiss,3.21.3,False,https://play.google.com/store/apps/details?id=fr.neamar.kiss
+20250510,OKX,com.okinc.okex.gp,6.118.0,False,https://play.google.com/store/apps/details?id=com.okinc.okex.gp
+20250510,Subway Surfers,com.kiloo.subwaysurf,4.0.2,True,https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf
+20250510,Swiggy,in.swiggy.android,4.79.2,True,https://play.google.com/store/apps/details?id=in.swiggy.android
+20250510,TikTok,com.ss.android.ugc.trill,37.5.21,True,https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill
+20250510,VNPAY App,vnpay.smartacccount,3.1.0,False,https://play.google.com/store/apps/details?id=vnpay.smartacccount
