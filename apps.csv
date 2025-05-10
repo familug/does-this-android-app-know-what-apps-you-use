@@ -12,3 +12,4 @@ checked_at,app_name,app_id,version,knows_all,store URL
 20250510,Swiggy,in.swiggy.android,4.79.2,True,https://play.google.com/store/apps/details?id=in.swiggy.android
 20250510,TikTok,com.ss.android.ugc.trill,37.5.21,True,https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill
 20250510,VNPAY App,vnpay.smartacccount,3.1.0,False,https://play.google.com/store/apps/details?id=vnpay.smartacccount
+20250510,Zalo,com.zing.zalo,25.04.01,True,https://play.google.com/store/apps/details?id=com.zing.zalo
