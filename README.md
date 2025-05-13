@@ -20,6 +20,7 @@ Repo này cung cấp công cụ để tìm hiểu các app nào có các quyền
 ## Mục tiêu
 Liệt kê top 100 app phổ biến nhất ở Google Play store Việt Nam.
 
+## Kết quả
 Xem kết quả tại [apps.csv](./apps.csv)
 
 ## Cài đặt
