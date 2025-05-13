@@ -17,6 +17,8 @@ from playwright.sync_api import sync_playwright
 import argparse
 import urllib.parse as up
 
+import manifest_parser as amparser
+
 
 def parse_id_from_play_url(url: str) -> str:
     q = up.urlparse(url).query
@@ -158,52 +160,55 @@ def get_file_last_modified(fn: str) -> str:
     return datetime.datetime.fromtimestamp(os.stat(fn).st_mtime).strftime("%Y%m%d")
 
 
-def check_leak_query_packages(manifest: str) -> bool:
-    lines = manifest.splitlines()
-    start_idx = None
-    end_idx = None
-    for idx, line in enumerate(lines):
-        if ("    E: queries") in line:
-            start_idx = idx
-            indents = line.count(" ", 0, line.index("E:"))
-        elif start_idx and line.startswith(indents * " " + "E:"):
-            end_idx = idx
-            break
-    if end_idx is None:
-        end_idx = idx
-
-    if start_idx is not None and end_idx is not None:
-        is_leak = "android.intent.action.MAIN" in "".join(lines[start_idx:end_idx])
-        return is_leak
-
-    return False
-
-
 def summary() -> None:
-    headers = ["checked_at", "app_name", "app_id", "version", "knows_all", "store URL"]
+    headers = [
+        "checked_at",
+        "app_name",
+        "app_id",
+        "store URL",
+        "version",
+        "knows all via query action.MAIN",
+        "knows specific packages",
+    ]
     with open(os.path.join(cur_dir, "apps.csv"), "wt") as csvf:
         writer = csv.writer(csvf)
         writer.writerow(headers)
 
         for fn in sorted(os.listdir(manifest_dir)):
             file_path = os.path.join(manifest_dir, fn)
+            print("Checking", file_path)
             with open(file_path) as f:
                 content = f.read()
-            leak = check_leak_query_packages(content)
+            leak = amparser.check_leak_query_packages(content)
             # app_id = "_".join(fn.split("_")[:-1])
             app_id = parse_package_name(content)
             app_name = fn.split("_")[0]
             version = parse_version(content)
             store_url = play_store_url(app_id)
             modified_time = get_file_last_modified(file_path)
+            queried_packages = " ".join(
+                amparser.remove_dup_sub_packages(
+                    amparser.query_packages(amparser.extract_query_section(content))
+                )
+            )
 
-            writer.writerow([modified_time, app_name, app_id, version, leak, store_url])
+            writer.writerow(
+                [
+                    modified_time,
+                    app_name,
+                    app_id,
+                    store_url,
+                    version,
+                    leak,
+                    queried_packages,
+                ]
+            )
 
 
 def run() -> None:
     if args.check:
         with open(args.check) as f:
-            print(check_leak_query_packages(f.read()))
+            print(amparser.check_leak_query_packages(f.read()))
         exit(0)
 
     download_res = download(url)
@@ -225,7 +230,8 @@ def main() -> None:
     run()
 
 
-main()
+if __name__ == "__main__":
+    main()
 # os.system("unzip " + str(download_filepath))
 # browser.close()
 # playwright.stop()

@@ -6,4 +6,6 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "playwright>=1.52.0",
+    "pytest>=8.3.5",
+    "ty>=0.0.0a8",
 ]
