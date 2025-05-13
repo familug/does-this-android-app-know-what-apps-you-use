@@ -54,7 +54,6 @@ Vào https://play.google.com tìm app cần kiểm tra, ví dụ facebook
 Tạo PR
 
 ## TODO
-- thêm cột các package cụ thể "được" theo dõi
 - sửa code để chạy được với headless browser, rồi tạo dockerfile để chạy trên docker/github action
 - tải app trực tiếp từ Google Play Store
 - tạo website check trực tiếp theo yêu cầu
