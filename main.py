@@ -11,6 +11,8 @@ import subprocess
 import shutil
 import tempfile
 import os
+import sys
+import logging
 from typing import Any
 from playwright.sync_api import sync_playwright
 
@@ -18,6 +20,10 @@ import argparse
 import urllib.parse as up
 
 import manifest_parser as amparser
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def parse_id_from_play_url(url: str) -> str:
@@ -32,7 +38,10 @@ assert parse_id_from_play_url(KISS_GPLAY_URL) == "fr.neamar.kiss"
 KISS_APK = "https://d.apkpure.com/b/XAPK/fr.neamar.kiss?version=latest"
 argp = argparse.ArgumentParser()
 argp.add_argument("--url", "-u", required=False, default=KISS_GPLAY_URL)
-argp.add_argument("--cleanup", "-c", required=False, action="store_true")
+argp.add_argument("--keep-download", "-k", required=False, action="store_true")
+argp.add_argument(
+    "--verbose", "-v", help="log verbose", required=False, action="store_true"
+)
 argp.add_argument("--check", help="Check if leak base on given manifest dump")
 args = argp.parse_args()
 
@@ -58,16 +67,16 @@ assert (
 url = gplay_to_download_url(args.url)
 
 
-# TODO: make it work with headless=True to able run on docker/GHA
 # TODO:  Try to download from other sources/directly from GPlay
 def download(url: str):
     # https://github.com/microsoft/playwright-python/issues/1557
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.firefox.launch(headless=True)
+    logger.info("Downloading URL %s", url)
+
     page = browser.new_page()
     with page.expect_download() as download_info:
         try:
             page.goto(url)
-            print(page)
         except Exception:
             pass
 
@@ -79,7 +88,7 @@ manifest_dir = os.path.join(os.path.abspath(os.path.dirname(".")), "manifests")
 os.makedirs(manifest_dir, exist_ok=True)
 cur_dir = os.path.abspath(os.path.dirname("."))
 
-d = tempfile.mkdtemp()
+tmpdir = tempfile.mkdtemp()
 
 
 def extract_appname(suggested_filename: str) -> str:
@@ -91,23 +100,28 @@ assert extract_appname("KISS Launcher_3.21.3_APKPure.apk") == "KISS Launcher"
 
 def extract(download: Any) -> dict[str, str]:
     download_filepath = download.path()
-    print(download_filepath)
-    os.chdir(d)
-    os.system(f"cp {download_filepath} file.zip")
+    logger.info(
+        "apk file: %s download to  %s", download.suggested_filename, download_filepath
+    )
+    os.system(f"cp {download_filepath} {tmpdir}/file.zip")
     result: dict[str, str] = {}
     if download.suggested_filename.endswith(".xapk"):
-        os.system("unzip " + str(download_filepath))
-        for fn in os.listdir():
+        subprocess.run(
+            [sys.executable, "-m", "zipfile", "-e", str(download_filepath), tmpdir],
+            check=True,
+        )
+        for fn in os.listdir(tmpdir):
             if fn.endswith(".apk") and not fn.startswith("config."):
                 output = subprocess.run(
                     [
                         "aapt",
                         "dump",
                         "xmltree",
-                        fn,
+                        os.path.join(tmpdir, fn),
                         "AndroidManifest.xml",
                     ],
                     capture_output=True,
+                    check=True,
                 ).stdout.decode("utf-8")
                 package_id = parse_package_name(output)
                 if package_id in fn:
@@ -117,6 +131,7 @@ def extract(download: Any) -> dict[str, str]:
         output = subprocess.run(
             ["aapt", "dump", "xmltree", download_filepath, "AndroidManifest.xml"],
             capture_output=True,
+            check=True,
         ).stdout.decode("utf-8")
         result[extract_appname(download.suggested_filename)] = output
 
@@ -210,11 +225,14 @@ def run() -> None:
         with open(args.check) as f:
             print(amparser.check_leak_query_packages(f.read()))
         exit(0)
+    if args.verbose:
+        logger.setLevel(logging.DEBUG)
 
     download_res = download(url)
     res = extract(download_res)
     for fn, value in res.items():
         output_fn = fn.removesuffix(".apk") + "_AndroidManifest.xmldump"
+        logger.info("Writing manifest %s", output_fn)
 
         output_path = os.path.join(manifest_dir, output_fn)
         with open(output_path, "wt") as f:
@@ -222,8 +240,9 @@ def run() -> None:
 
     summary()
 
-    if args.cleanup:
-        shutil.rmtree(d)
+    if not args.keep_download:
+        logger.debug("Removing tmp dir: %s", tmpdir)
+        shutil.rmtree(tmpdir)
 
 
 def main() -> None:
@@ -232,6 +251,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-# os.system("unzip " + str(download_filepath))
 # browser.close()
 # playwright.stop()
