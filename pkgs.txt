@@ -22,3 +22,4 @@ https://play.google.com/store/apps/details?id=us.nobarriers.elsa
 https://play.google.com/store/apps/details?id=com.gsm.customer
 https://play.google.com/store/apps/details?id=com.VCB
 https://play.google.com/store/apps/details?id=org.telegram.messenger
+https://play.google.com/store/apps/details?id=com.discord
