@@ -35,12 +35,11 @@ jobs:
         timestamp=$(date -u)
         branch_name=$(date +%s)
         git checkout -b $branch_name
-        echo branch_name=$branch_name >> GITHUB_ENV
         git add -A
         git commit -m "Latest data: ${timestamp}" || exit 0
-
+        echo branch_name=$branch_name >> "$GITHUB_ENV"
 
     - name: create pull request
-      run: gh pr create -B main -H "$branch_name" --head --title "Merge $branch_name" --body 'Created by Github action'
+      run: gh pr create -B main --head "$branch_name" --title "Merge $branch_name" --body 'Created by Github action'
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
