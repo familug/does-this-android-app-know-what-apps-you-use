@@ -41,6 +41,13 @@ Fork repo này.
 ### Chạy
 Vào https://play.google.com tìm app cần kiểm tra, ví dụ facebook
 
+
+#### Container
+```
+podman build . -t androidleak
+podman run -v $PWD:/app androidleak 'https://play.google.com/store/apps/details?id=com.netflix.mediaclient'
+```
+#### Local
 ```
  python main.py  --url 'https://play.google.com/store/apps/details?id=com.facebook.katana'
 
@@ -54,8 +61,7 @@ Vào https://play.google.com tìm app cần kiểm tra, ví dụ facebook
 Tạo PR
 
 ## TODO
-- sửa code để chạy được với headless browser, rồi tạo dockerfile để chạy trên docker/github action
 - tải app trực tiếp từ Google Play Store
 - tạo website check trực tiếp theo yêu cầu
 - Get list of top app on Google Play Store , e.g in Vietnam
-- Try apttool to extrace the text XML file, it failed with vn shopeee app.
+- Try extract manifest file via jadx
