@@ -23,6 +23,12 @@ Liệt kê top 100 app phổ biến nhất ở Google Play store Việt Nam.
 ## Kết quả
 Xem kết quả tại [apps.csv](./apps.csv)
 
+## Đóng góp
+
+Vào https://play.google.com tìm app cần kiểm tra, ví dụ facebook
+
+Sửa file `pkgs.txt` thêm URL package cần kiểm tra vào 1 dòng mới, tạo Pull R.
+
 ## Cài đặt
 Trên Ubuntu, tải repo về, chạy cài đặt
 
@@ -31,34 +37,22 @@ Requirements:
 
 ```
 sudo apt install -y appt unzip
-pip install --upgrade pip; pip install playwright ; playwright install
+pip install --upgrade uv; uvx playwright install firefox --with-deps
 ```
 
-## Đóng góp
-
-Fork repo này.
-
-### Chạy
-Vào https://play.google.com tìm app cần kiểm tra, ví dụ facebook
+## Chạy
 
 
-#### Container
+### Container
 ```
 podman build . -t androidleak
 podman run -v $PWD:/app androidleak 'https://play.google.com/store/apps/details?id=com.netflix.mediaclient'
 ```
-#### Local
+
+### Local
 ```
- python main.py  --url 'https://play.google.com/store/apps/details?id=com.facebook.katana'
-
- git checkout -b facebook
- git add manifests apps.csv
- git commit -m 'Add facebook'
- git push origin facebook
-
-
+uv run main.py  --url 'https://play.google.com/store/apps/details?id=com.facebook.katana'
 ```
-Tạo PR
 
 ## TODO
 - tải app trực tiếp từ Google Play Store
