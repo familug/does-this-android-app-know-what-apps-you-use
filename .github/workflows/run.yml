@@ -4,7 +4,9 @@
 name: Python application
 
 on:
-  push:
+  pull_request:
+    branches:
+      - main
     paths:
       - 'pkgs.txt'
 
@@ -20,7 +22,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 2
+        fetch-depth: 0
+
+    - name: Get changes
+      run: git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
+
     - name: Install aapt
       run: sudo apt-get update && sudo apt-get install -y aapt
 
