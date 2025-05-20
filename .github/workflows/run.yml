@@ -1,11 +1,14 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python application
+name: Analyze package
 
 on:
-  push:
-    branches: [ "run" ]
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'pkgs.txt'
 
 permissions:
   contents: write
@@ -18,6 +21,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get changes
+      run: git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
+
     - name: Install aapt
       run: sudo apt-get update && sudo apt-get install -y aapt
 
@@ -26,7 +35,11 @@ jobs:
     - name: Run
       run: |
         uvx playwright install firefox --with-deps
-        uv run main.py
+        for f in $(git diff HEAD^1 -- pkgs.txt | grep ^+http | tr -d '+'); do
+          echo $f;
+          uv run main.py --url "$f"
+        done
+
 
     - name: Commit
       run: |
