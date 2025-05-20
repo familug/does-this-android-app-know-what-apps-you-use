@@ -41,7 +41,8 @@ jobs:
         echo branch_name=$branch_name >> "$GITHUB_ENV"
 
     - name: create pull request
-      debug: true
-      run: gh pr create -B main --head "$branch_name" --title "Merge $branch_name" --body 'Created by Github action'
+      run: |
+        echo 'Branch name' $branch_name
+        gh pr create -B main --head "$branch_name" --title "Merge $branch_name" --body 'Created by Github action'
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
