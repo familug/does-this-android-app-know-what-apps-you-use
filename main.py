@@ -172,7 +172,7 @@ assert (
 
 
 def get_file_last_modified(fn: str) -> str:
-    return datetime.datetime.fromtimestamp(os.stat(fn).st_mtime).strftime("%Y%m%d")
+    return datetime.datetime.fromtimestamp(os.stat(fn).st_ctime).strftime("%Y%m%d")
 
 
 def summary() -> None:
