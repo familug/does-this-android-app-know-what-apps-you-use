@@ -48,7 +48,6 @@ jobs:
         git status --porcelain
         timestamp=$(date -u)
         branch_name=$(date +%s)
-        git checkout -b $branch_name
         git add apps.csv manifests
-        git commit -m "Latest data: ${timestamp}" || exit 0
+        git commit -m "Update: ${timestamp}" || exit 0
         git push
