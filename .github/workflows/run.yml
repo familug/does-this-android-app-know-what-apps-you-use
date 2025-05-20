@@ -49,6 +49,5 @@ jobs:
         timestamp=$(date -u)
         git add apps.csv manifests
         git commit -m "Update: ${timestamp}" || exit 0
-        git push origin $BRANCH_NAME
-      env:
-        BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        git pull --rebase
+        git push
