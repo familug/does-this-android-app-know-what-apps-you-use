@@ -14,3 +14,5 @@ https://play.google.com/store/apps/details?id=com.ss.android.ugc.trill
 https://play.google.com/store/apps/details?id=vnpay.smartacccount
 https://play.google.com/store/apps/details?id=com.twitter.android
 https://play.google.com/store/apps/details?id=com.zing.zalo
+https://play.google.com/store/apps/details?id=xyz.be.customer
+https://play.google.com/store/apps/details?id=com.duolingo
