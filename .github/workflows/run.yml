@@ -36,7 +36,7 @@ jobs:
         timestamp=$(date -u)
         branch_name=$(date +%s)
         git checkout -b $branch_name
-        git add -A
+        git add apps.csv manifests
         git commit -m "Latest data: ${timestamp}" || exit 0
         git push origin $branch_name
         echo branch_name=$branch_name >> "$GITHUB_ENV"
