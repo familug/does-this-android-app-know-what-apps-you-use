@@ -4,9 +4,7 @@
 name: Analyze package
 
 on:
-  pull_request:
-    branches:
-      - main
+  push:
     paths:
       - 'pkgs.txt'
 
@@ -47,16 +45,6 @@ jobs:
         git config user.email "actions@users.noreply.github.com"
         git status --porcelain
         timestamp=$(date -u)
-        branch_name=$(date +%s)
-        git checkout -b $branch_name
         git add apps.csv manifests
-        git commit -m "Latest data: ${timestamp}" || exit 0
-        git push origin $branch_name
-        echo branch_name=$branch_name >> "$GITHUB_ENV"
-
-    - name: create pull request
-      run: |
-        echo 'Branch name' $branch_name
-        gh pr create -B main --head "$branch_name" --title "Merge $branch_name" --body 'Created by Github action'
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        git commit -m "Update: ${timestamp}" || exit 0
+        git push origin ${{ github.ref_name }}
