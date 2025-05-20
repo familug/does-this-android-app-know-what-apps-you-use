@@ -4,9 +4,7 @@
 name: Analyze package
 
 on:
-  pull_request:
-    branches:
-      - main
+  push:
     paths:
       - 'pkgs.txt'
 
