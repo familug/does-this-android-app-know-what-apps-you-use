@@ -17,3 +17,4 @@ https://play.google.com/store/apps/details?id=com.zing.zalo
 https://play.google.com/store/apps/details?id=xyz.be.customer
 https://play.google.com/store/apps/details?id=com.duolingo
 https://play.google.com/store/apps/details?id=com.grabtaxi.passenger
+https://play.google.com/store/apps/details?id=us.nobarriers.elsa
