@@ -48,4 +48,4 @@ jobs:
         timestamp=$(date -u)
         git add apps.csv manifests
         git commit -m "Update: ${timestamp}" || exit 0
-        git push origin ${{ github.ref_name }}
+        git push origin ${{ github.head_ref }}
