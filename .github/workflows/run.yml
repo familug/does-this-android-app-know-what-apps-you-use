@@ -4,7 +4,8 @@
 name: Analyze package
 
 on:
-  push:
+  pull_request:
+    branches: [ "main" ]
     paths:
       - 'pkgs.txt'
 
@@ -20,7 +21,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        ref: ${{ github.head_ref }}
+
+    - name: Get changes
+      run: |
+        git fetch origin $GITHUB_BASE_REF:$GITHUB_BASE_REF
+        git log -n 5
 
     - name: Install aapt
       run: sudo apt-get update && sudo apt-get install -y aapt
@@ -30,9 +36,7 @@ jobs:
     - name: Run
       run: |
         uvx playwright install firefox --with-deps
-        git fetch origin main
-        MERGE_BASE=$(git merge-base origin/main HEAD)
-        for f in $(git diff $MERGE_BASE -- pkgs.txt | grep ^+http | tr -d '+'); do
+        for f in $(git diff $GITHUB_BASE_REF -- pkgs.txt | grep ^+http | tr -d '+'); do
           echo $f;
           uv run main.py --url "$f"
         done
